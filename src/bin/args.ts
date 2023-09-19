@@ -5,6 +5,8 @@ import { z } from 'zod';
 
 import { formatZodErrorString } from '../zod-error-formatter.js';
 
+import { VALID_COMMANDS, VALID_COMMANDS_ARRAY } from './command.js';
+
 const internalArgs = arg({
   '--project': String,
 });
@@ -29,9 +31,6 @@ function parseArgs<T extends Record<string, unknown>>(
     }),
   ) as FromArgToCamelCase<T>;
 }
-
-const VALID_COMMANDS_ARRAY = ['help', 'dev', 'build', 'deploy'] as const;
-const VALID_COMMANDS: ReadonlySet<string> = new Set(VALID_COMMANDS_ARRAY);
 
 const ArgsSchema = z
   .object({
