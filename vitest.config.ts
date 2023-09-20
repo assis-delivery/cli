@@ -23,6 +23,7 @@ export default defineConfig({
         '**/index.ts',
         '**/*.{type,schema,token,module,config}.ts',
         '**/*.d.ts',
+        'src/bin/bin.ts',
       ],
     },
   },

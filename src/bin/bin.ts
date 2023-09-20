@@ -1,38 +1,8 @@
 #!/usr/bin/env node
-import { Injectable, ROOT_INJECTOR } from '@stlmpp/di';
+import { ROOT_INJECTOR } from '@stlmpp/di';
 
-import { ArgsService } from './args.service.js';
-import { BuildCommand } from './build.command.js';
-import { Command, CommandType } from './command.js';
-import { DeployCommand } from './deploy.command.js';
-import { DevCommand } from './dev.command.js';
-import { HelpCommand } from './help.command.js';
+import { BinCommand } from './bin.command.js';
 
-@Injectable({ root: true })
-class Bin implements Command {
-  constructor(
-    private readonly argsService: ArgsService,
-    helpCommand: HelpCommand,
-    devCommand: DevCommand,
-    buildCommand: BuildCommand,
-    deployCommand: DeployCommand,
-  ) {
-    this.commands = {
-      help: helpCommand,
-      dev: devCommand,
-      build: buildCommand,
-      deploy: deployCommand,
-    };
-  }
-
-  private readonly commands: Record<CommandType, Command>;
-
-  execute(): void | Promise<void> {
-    const command = this.argsService.getCommand();
-    return this.commands[command].execute();
-  }
-}
-
-const bin = await ROOT_INJECTOR.resolve(Bin);
+const bin = await ROOT_INJECTOR.resolve(BinCommand);
 
 bin.execute();
