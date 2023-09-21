@@ -6,7 +6,7 @@ import { KillPortService } from './kill-port.service.js';
 import { SwcService } from './swc.service.js';
 
 export interface DevelopmentOptions {
-  projectId: string;
+  projectId?: string;
 }
 
 @Injectable({ root: true })
@@ -28,7 +28,9 @@ export class DevService {
       this.swcService.writeFile(swcrc),
       this.firebaseService.writeFile(firebaseJson),
     ]);
-    this.firebaseService.useProjectId(options.projectId);
+    if (options.projectId) {
+      this.firebaseService.useProjectId(options.projectId);
+    }
     this.childProcessService.spawn('npm', ['run', 'build:watch'], {
       shell: true,
       stdio: 'ignore',

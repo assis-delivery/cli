@@ -20,7 +20,7 @@ export class AdCli {
     await this.deployService.deploy();
   }
 
-  async deployCI(options: Required<DeployOptions>): Promise<void> {
+  async deployCI(options: DeployOptions): Promise<void> {
     await this.deployService.deployCI(options);
   }
 

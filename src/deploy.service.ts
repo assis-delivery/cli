@@ -6,9 +6,9 @@ import { PathService } from './path.service.js';
 import { ProcessService } from './process.service.js';
 
 export interface DeployOptions {
-  googleApplicationCredentialsJson?: object;
-  googleApplicationCredentialsFilename?: string;
-  projectId?: string;
+  googleApplicationCredentialsJson: object;
+  googleApplicationCredentialsFilename: string;
+  projectId: string;
 }
 
 @Injectable({ root: true })
@@ -24,7 +24,7 @@ export class DeployService {
     this.firebaseService.deploy(false);
   }
 
-  async deployCI(options: Required<DeployOptions>): Promise<void> {
+  async deployCI(options: DeployOptions): Promise<void> {
     const {
       googleApplicationCredentialsJson,
       googleApplicationCredentialsFilename,
