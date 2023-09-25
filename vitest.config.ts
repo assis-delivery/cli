@@ -5,6 +5,7 @@ import { defineConfig, mergeConfig } from 'vitest/config';
 
 export default defineConfig(async (env) => {
   const defaultConfig = await vitestConfig(env);
+  defaultConfig.plugins = [];
   return mergeConfig(defaultConfig, {
     plugins: [
       swc.vite({
@@ -19,3 +20,7 @@ export default defineConfig(async (env) => {
     } satisfies InlineConfig,
   });
 });
+
+import('./vitest.config.ts').then(async (value) =>
+  console.log(await value.default()),
+);
