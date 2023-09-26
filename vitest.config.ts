@@ -10,7 +10,10 @@ export default defineConfig(async (env) => {
     plugins: [
       swc.vite({
         module: { type: 'es6' },
-        sourceMaps: true,
+        jsc: {
+          target: 'es2021',
+          externalHelpers: true,
+        },
       }),
     ],
     test: {
@@ -20,7 +23,3 @@ export default defineConfig(async (env) => {
     } satisfies InlineConfig,
   });
 });
-
-import('./vitest.config.ts').then(async (value) =>
-  console.log(await value.default()),
-);
