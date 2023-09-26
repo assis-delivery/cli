@@ -17,12 +17,6 @@ export class DevCommand implements Command {
   async execute(): Promise<void> {
     const projectId =
       this.argsService.get('project') ?? this.processService.env.AD_PROJECT_ID;
-    if (!projectId) {
-      throw new Error(
-        'ProjectID not found. Please use the argumento --project or ' +
-          'set the AD_PROJECT_ID in your environment variables',
-      );
-    }
     await this.devService.dev({
       projectId,
     });
