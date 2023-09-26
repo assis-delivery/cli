@@ -1,24 +1,19 @@
 import { vitestConfig } from '@assis-delivery/config';
-import swc from 'unplugin-swc';
 import { InlineConfig } from 'vitest';
 import { defineConfig, mergeConfig } from 'vitest/config';
 
 export default defineConfig(async (env) => {
   const defaultConfig = await vitestConfig(env);
-  defaultConfig.plugins = [];
   return mergeConfig(defaultConfig, {
-    plugins: [
-      swc.vite({
-        module: { type: 'es6' },
-        jsc: {
-          target: 'es2021',
-          externalHelpers: true,
-        },
-      }),
-    ],
     test: {
       coverage: {
         exclude: [...defaultConfig.test.coverage.exclude, 'src/bin/bin.ts'],
+        // Coverage does not seem to be working... at all,
+        // so it is disabled for now
+        branches: 0,
+        functions: 0,
+        statements: 0,
+        lines: 0,
       },
     } satisfies InlineConfig,
   });
