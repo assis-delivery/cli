@@ -1,18 +1,26 @@
-import { CommandType } from './command.js';
+import { Injectable } from '@stlmpp/di';
 
-export async function helpCommand(): Promise<void> {
-  const options: Record<CommandType, string> = {
-    help: 'Show this menu',
-    dev: 'Command used to develop locally',
-    build: 'Build your code to production',
-    deploy: 'Deploy your function (CI only)',
-  };
-  const entries = Object.entries(options);
-  // eslint-disable-next-line no-console
-  console.table(
-    entries.map(([command, description]) => ({
-      command,
-      description,
-    })),
-  );
+import { ConsoleService } from '../console.service.js';
+
+import { Command, CommandType } from './command.js';
+
+@Injectable({ root: true })
+export class HelpCommand implements Command {
+  constructor(private readonly consoleService: ConsoleService) {}
+
+  execute(): void {
+    const options: Record<CommandType, string> = {
+      help: 'Show this menu',
+      dev: 'Command used to develop locally',
+      build: 'Build your code to production',
+      deploy: 'Deploy your function (CI only)',
+    };
+    const entries = Object.entries(options);
+    this.consoleService.table(
+      entries.map(([command, description]) => ({
+        command,
+        description,
+      })),
+    );
+  }
 }

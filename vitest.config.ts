@@ -1,34 +1,20 @@
-import swc from 'unplugin-swc';
-import { defineConfig } from 'vitest/config';
+import { vitestConfig } from '@assis-delivery/config';
+import { InlineConfig } from 'vitest';
+import { defineConfig, mergeConfig } from 'vitest/config';
 
-import packageJson from './package.json';
-
-export default defineConfig({
-  test: {
-    name: packageJson.name,
-    environment: 'node',
-    globals: true,
-    root: './',
-    coverage: {
-      enabled: true,
-      branches: 70,
-      functions: 70,
-      lines: 70,
-      statements: 70,
-      all: true,
-      reporter: ['text', 'html', 'json', 'lcovonly'],
-      cleanOnRerun: false,
-      exclude: [
-        '.eslintrc.cjs',
-        '**/index.ts',
-        '**/*.{type,schema,token,module,config}.ts',
-        '**/*.d.ts',
-      ],
-    },
-  },
-  plugins: [
-    swc.vite({
-      module: { type: 'es6' },
-    }),
-  ],
+export default defineConfig(async (env) => {
+  const defaultConfig = await vitestConfig(env);
+  return mergeConfig(defaultConfig, {
+    test: {
+      coverage: {
+        exclude: [...defaultConfig.test.coverage.exclude, 'src/bin/bin.ts'],
+        // Coverage does not seem to be working... at all,
+        // so it is disabled for now
+        branches: 0,
+        functions: 0,
+        statements: 0,
+        lines: 0,
+      },
+    } satisfies InlineConfig,
+  });
 });

@@ -1,18 +1,30 @@
-import { FIREBASE_JSON } from '../constants.js';
-import { dev } from '../dev.js';
+import { Injectable } from '@stlmpp/di';
 
-import { args } from './args.js';
+import { DevService } from '../dev.service.js';
+import { ProcessService } from '../process.service.js';
 
-export async function devCommand(): Promise<void> {
-  const projectId = args.project ?? process.env.AD_PROJECT_ID;
-  if (!projectId) {
-    throw new Error(
-      'ProjectID not found. Please use the argumento --project or ' +
-        'set the AD_PROJECT_ID in your environment variables',
-    );
+import { ArgsService } from './args.service.js';
+import { Command } from './command.js';
+
+@Injectable({ root: true })
+export class DevCommand implements Command {
+  constructor(
+    private readonly devService: DevService,
+    private readonly processService: ProcessService,
+    private readonly argsService: ArgsService,
+  ) {}
+
+  async execute(): Promise<void> {
+    const projectId =
+      this.argsService.get('project') ?? this.processService.env.AD_PROJECT_ID;
+    if (!projectId) {
+      throw new Error(
+        'ProjectID not found. Please use the argumento --project or ' +
+          'set the AD_PROJECT_ID in your environment variables',
+      );
+    }
+    await this.devService.dev({
+      projectId,
+    });
   }
-  await dev({
-    firebaseJson: FIREBASE_JSON(),
-    projectId,
-  });
 }

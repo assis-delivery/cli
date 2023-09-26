@@ -1,18 +1,8 @@
 #!/usr/bin/env node
-import { args } from './args.js';
-import { buildCommand } from './build.command.js';
-import { CommandType } from './command.js';
-import { deployCommand } from './deploy.command.js';
-import { devCommand } from './dev.command.js';
-import { helpCommand } from './help.command.js';
+import { ROOT_INJECTOR } from '@stlmpp/di';
 
-const command = args._;
+import { BinCommand } from './bin.command.js';
 
-const commands: Record<CommandType, () => Promise<void>> = {
-  help: helpCommand,
-  dev: devCommand,
-  build: buildCommand,
-  deploy: deployCommand,
-};
+const bin = await ROOT_INJECTOR.resolve(BinCommand);
 
-commands[command]();
+bin.execute();
