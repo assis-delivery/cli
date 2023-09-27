@@ -3,6 +3,7 @@ import { Injectable } from '@stlmpp/di';
 import { ChildProcessService } from './child-process.service.js';
 import { FirebaseService } from './firebase.service.js';
 import { KillPortService } from './kill-port.service.js';
+import { ProcessService } from './process.service.js';
 import { SwcService } from './swc.service.js';
 
 export interface DevelopmentOptions {
@@ -16,9 +17,11 @@ export class DevService {
     private readonly swcService: SwcService,
     private readonly childProcessService: ChildProcessService,
     private readonly killPortService: KillPortService,
+    private readonly processService: ProcessService,
   ) {}
 
   async dev(options: DevelopmentOptions): Promise<void> {
+    this.processService.env.AD_DEV_MODE = 'true';
     const firebaseJson = this.firebaseService.getFirebaseJson();
     const ports = this.firebaseService.getFirebaseJsonPorts(firebaseJson);
     const swcrc = this.swcService.getSwcDefault();

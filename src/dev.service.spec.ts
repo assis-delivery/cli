@@ -4,6 +4,7 @@ import { ChildProcessService } from './child-process.service.js';
 import { DevelopmentOptions, DevService } from './dev.service.js';
 import { FirebaseService } from './firebase.service.js';
 import { KillPortService } from './kill-port.service.js';
+import { ProcessService } from './process.service.js';
 import { SwcService } from './swc.service.js';
 import { FirebaseJson } from './type/firebase-json.type.js';
 import { SWCOptions } from './type/swc.type.js';
@@ -20,6 +21,9 @@ describe('dev.service', () => {
   });
   const childProcessServiceMock = mock<ChildProcessService>();
   const killPortServiceMock = mock<KillPortService>();
+  const processServiceMock = mock<ProcessService>({
+    env: {},
+  });
 
   beforeEach(() => {
     vi.resetAllMocks();
@@ -28,6 +32,7 @@ describe('dev.service', () => {
       swcServiceMock,
       childProcessServiceMock,
       killPortServiceMock,
+      processServiceMock,
     );
   });
 
